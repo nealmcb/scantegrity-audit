@@ -110,9 +110,16 @@ def verify(output_stream):
   challenge_row_ids_ints = set([int(c) for c in challenge_row_ids])
   challenges_match_randomness = False
   seed = meeting_two_random_data + election.constant
-  if challenge_row_ids_ints == set(base.generate_random_int_list(seed, election.num_ballots, len(challenge_row_ids))):
+  regenerate_row_ids_ints = set(base.generate_random_int_list(seed, election.num_ballots, len(challenge_row_ids)))
+
+  if challenge_row_ids_ints == regenerate_row_ids_ints:
     challenges_match_randomness = True
   else:
+    print "Challenges Don't Match Randomness:"
+    print " challenge_row_ids_ints: %s" % challenge_row_ids_ints
+    print " generate_random_int_list: %s" % regenerate_row_ids_ints
+    print " diff: %s" % (regenerate_row_ids_ints ^ challenge_row_ids_ints)
+
     import pdb; pdb.set_trace()
 
   
