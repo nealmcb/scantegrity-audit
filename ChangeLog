@@ -1,0 +1,10 @@
+2011-10-26  Neal McBurnett  <neal@bcn.boulder.co.us>
+
+	* meeting2.py: set correct_windows=False when processing random
+	seed file, since in 2011 the original file was generated on Linux
+	rather than Windows.  This should instead be fixed instead by
+	using "universal newline" from PEP 0278 both in the file_in_dir()
+	function and in get_latest_djia_stock_prices.py.
+
+	* add set_meeting_two_random_data() in filenames.py to allow specifying random data file
+	  and use it in meeting2.py and meeting4.py

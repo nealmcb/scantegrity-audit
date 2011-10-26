@@ -20,6 +20,12 @@ MEETING_TWO_OUT = "MeetingTwoOut.xml"
 MEETING_TWO_OUT_COMMITMENTS = "MeetingTwoOutCommitments.xml"
 MEETING_TWO_RANDOM_DATA = "pre-election-random-data.txt"
 
+def set_meeting_two_random_data(relative_filename):
+  "Set a non-default value for the random data for meeting 2"
+
+  global MEETING_TWO_RANDOM_DATA
+  MEETING_TWO_RANDOM_DATA = relative_filename
+
 # third meeting
 MEETING_THREE_IN = "MeetingThreeIn.xml"
 MEETING_THREE_OUT = "MeetingThreeOut.xml"
@@ -50,6 +56,12 @@ def reset():
 MEETING_FOUR_IN = "MeetingFourIn.xml"
 MEETING_FOUR_OUT = "MeetingFourOut.xml"
 MEETING_FOUR_RANDOM_DATA = "post-election-random-data.txt"
+
+def set_meeting_four_random_data(relative_filename):
+  "Set a non-default value for the random data for meeting 4"
+
+  global MEETING_FOUR_RANDOM_DATA
+  MEETING_FOUR_RANDOM_DATA = relative_filename
 
 # contested ballots
 CONTESTED_BALLOTS_REPLY = "ReplyToContestedCodes.xml"

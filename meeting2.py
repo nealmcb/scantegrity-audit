@@ -9,7 +9,13 @@ data path should NOT have a trailing slash
 
 # core imports
 import sys, base64
-import base, data, filenames
+import base
+import data
+import filenames
+
+if len(sys.argv) > 2:
+  # Note that the path provided as the second argument must be relative to the data directory, not absolute
+  filenames.set_meeting_two_random_data(sys.argv[2])
 
 # use the meeting1 data structures too
 import meeting1
@@ -21,7 +27,7 @@ election, p_table, partitions = meeting1.election, meeting1.p_table, meeting1.pa
 meeting_two_in_xml = base.file_in_dir(base.DATA_PATH, filenames.MEETING_TWO_IN, 'Meeting Two In')
 meeting_two_out_xml = base.file_in_dir(base.DATA_PATH, filenames.MEETING_TWO_OUT, "Meeting Two Out")
 meeting_two_out_commitments_xml = base.file_in_dir(base.DATA_PATH, filenames.MEETING_TWO_OUT_COMMITMENTS, "Meeting Two Out Commitments")
-meeting_two_random_data = base.file_in_dir(base.DATA_PATH, filenames.MEETING_TWO_RANDOM_DATA, "Random Data for Meeting Two Challenges", xml=False, correct_windows=True)
+meeting_two_random_data = base.file_in_dir(base.DATA_PATH, filenames.MEETING_TWO_RANDOM_DATA, "Random Data for Meeting Two Challenges", xml=False, correct_windows=False)
 
 # get the challenges
 challenge_p_table = data.PTable()

@@ -9,7 +9,9 @@ data path should NOT have a trailing slash
 
 # core imports
 import sys
-import base, data, filenames
+import base
+import data
+import filenames
 
 # use the meeting1,2,3 data structures too
 import meeting1, meeting2
@@ -20,7 +22,7 @@ import meeting3provisional as meeting3
 # fourth meeting
 meeting_four_in_xml = base.file_in_dir(base.DATA_PATH, filenames.MEETING_FOUR_IN, 'Meeting Four In')
 meeting_four_out_xml = base.file_in_dir(base.DATA_PATH, filenames.MEETING_FOUR_OUT, 'Meeting Four Out')
-meeting_four_random_data = base.file_in_dir(base.DATA_PATH, filenames.MEETING_FOUR_RANDOM_DATA, "Random Data for Meeting Four Challenges", xml=False, correct_windows=True)
+meeting_four_random_data = base.file_in_dir(base.DATA_PATH, filenames.MEETING_FOUR_RANDOM_DATA, "Random Data for Meeting Four Challenges", xml=False, correct_windows=False)
 
 # from meeting1 and meeting 2
 election, d_table_commitments, already_open_d_tables = meeting1.election, meeting1.partitions, meeting2.response_partitions
@@ -125,4 +127,8 @@ Challenges Match Randomness? %s
 """ % (election.spec.id, challenges_match_randomness, base.fingerprint_report()))
 
 if __name__ == "__main__":
+  if len(sys.argv) > 2:
+    # Note that the path provided as the second argument must be relative to the data directory, not absolute
+    filenames.set_meeting_four_random_data(sys.argv[2])
+
   verify(sys.stdout)
