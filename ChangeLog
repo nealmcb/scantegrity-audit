@@ -1,5 +1,9 @@
 2011-10-26  Neal McBurnett  <neal@bcn.boulder.co.us>
 
+	* wrote watch_remotegrity_bb.py to download the bulletin boards and save only when new
+
+2011-10-26  Neal McBurnett  <neal@bcn.boulder.co.us>
+
 	* meeting2.py: set correct_windows=False when processing random
 	seed file, since in 2011 the original file was generated on Linux
 	rather than Windows.  This should instead be fixed instead by
