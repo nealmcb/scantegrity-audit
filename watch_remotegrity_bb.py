@@ -17,6 +17,8 @@ from datetime import datetime
 import urllib
 import logging
 import hashlib
+import random
+import glob
 
 __author__ = "Neal McBurnett <http://neal.mcburnett.org/>"
 __version__ = "0.1.0"
@@ -36,7 +38,7 @@ parser.add_option("-i", "--interval", type="int",
 __doc__ = __doc__.replace("%InsertOptionParserUsage%\n", parser.format_help())
 
 def md5sum(filename):
-    "Compute MD5 hash value of the given file" 
+    "Return MD5 hash value (in hex) of the given file" 
 
     with open(filename, mode='rb') as f:
         d = hashlib.md5()
@@ -49,32 +51,48 @@ def md5sum(filename):
 
 def main(parser):
     """
-    Sit in a loop retrieving all both BB.php and BBoffline.php.
-    If the data is the same as last time, don't save it.
+    Sit in a loop retrieving BB.php, BBoffline.php, rss.php and rssAccepted.php.
+    Save the data unless it is the same as last time.
     The delay interval between retrievals is configurable.
     """
 
     logging.basicConfig(level=logging.INFO, format='%(message)s', filename= "watch_remotegrity_bb.log", filemode='a' )
 
+    logging.info("Start watch_remotegrity_bb.py")
+
     (options, args) = parser.parse_args()
 
     paths = ["BB.php", "BBoffline.php", "rss.php", "rssAccepted.php"]
 
-    last_hashes = [None for path in paths]
+    last_hashes = []
+    for path in paths:
+        # Find the last filename starting with this path that was already retrieved and get md5sum
+        retrieved = glob.glob(path + "-*")
+
+        if retrieved:
+            retrieved.sort()
+            filename = retrieved[-1]
+            hash = md5sum(filename)
+            last_hashes.append(hash)
+            logging.info("Previous %s is %s: hash %s" % (path, filename, hash))
+        else:
+            last_hashes.append(None)
 
     while True:
 
         for i, path in enumerate(paths):
-            # Save the given url in a local file, suffixed with a UTC ISO timestamp
+            # Save the given url in a local file, suffixed with an ISO timestamp in UTC timezone
             # down to the second, e.g. BB.php-20111026T221041
             url = options.urlbase + path
             filename = path + datetime.utcnow().strftime('-%Y%m%dT%H%M%S')
 
             try:
                 filename, response = urllib.urlretrieve(url, filename)
-                logging.info("Retrieved %s, %s bytes" % (filename, response.dict['content-length']))
 
                 hash = md5sum(filename)
+                logging.info("Retrieved %s, %s bytes, hash %s" % (filename, response.dict['content-length'], hash))
+
+                # Remove the file if we've already seen the same content
                 if hash != last_hashes[i]:
                     last_hashes[i] = hash
                     logging.info("%s is new" % (filename))
@@ -84,7 +102,9 @@ def main(parser):
             except Exception, e:
                 logging.error("Exception getting %s for %s: %s" % (url, filename, e))
 
-        time.sleep(options.interval)
+        # Choose a random interval before the next request, with mean options.interval
+        # using the exponential distribution (the interval between events in a Poisson process)
+        time.sleep(random.expovariate(1.0 / options.interval))
 
 if __name__ == "__main__":
     main(parser)

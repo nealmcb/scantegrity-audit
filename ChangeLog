@@ -1,3 +1,9 @@
+2011-10-29  Neal McBurnett  <neal@bcn.boulder.co.us>
+	* watch_remotegrity_bb.py Start by getting most recent hash of saved files, so on restart we don't save duplicates
+
+2011-10-28  Neal McBurnett  <neal@bcn.boulder.co.us>
+	* watch_remotegrity_bb.py randomize sleep intervals
+
 2011-10-27  Neal McBurnett  <neal@bcn.boulder.co.us>
 	* remove files that are identical to the previously-downloaded file
 	* watch the two rss files also
