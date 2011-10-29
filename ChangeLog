@@ -1,3 +1,7 @@
+2011-10-27  Neal McBurnett  <neal@bcn.boulder.co.us>
+	* remove files that are identical to the previously-downloaded file
+	* watch the two rss files also
+
 2011-10-26  Neal McBurnett  <neal@bcn.boulder.co.us>
 
 	* wrote watch_remotegrity_bb.py to download the bulletin boards and save only when new

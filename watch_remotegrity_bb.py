@@ -58,25 +58,31 @@ def main(parser):
 
     (options, args) = parser.parse_args()
 
-    paths = ["BB.php", "BBoffline.php"]
+    paths = ["BB.php", "BBoffline.php", "rss.php", "rssAccepted.php"]
 
-    last_hashes = [None, None]
+    last_hashes = [None for path in paths]
 
     while True:
 
-        for i, url in enumerate(paths):
+        for i, path in enumerate(paths):
             # Save the given url in a local file, suffixed with a UTC ISO timestamp
             # down to the second, e.g. BB.php-20111026T221041
-            file, response = urllib.urlretrieve(options.urlbase + url,
-                                url + datetime.utcnow().strftime('-%Y%m%dT%H%M%S'))
-            logging.info("Retrieved %s, %s bytes" % (file, response.dict['content-length']))
+            url = options.urlbase + path
+            filename = path + datetime.utcnow().strftime('-%Y%m%dT%H%M%S')
 
-            hash = md5sum(file)
-            if hash != last_hashes[i]:
-                last_hashes[i] = hash
-                logging.info("%s is new" % (file))
-            else:
-                os.remove(file)
+            try:
+                filename, response = urllib.urlretrieve(url, filename)
+                logging.info("Retrieved %s, %s bytes" % (filename, response.dict['content-length']))
+
+                hash = md5sum(filename)
+                if hash != last_hashes[i]:
+                    last_hashes[i] = hash
+                    logging.info("%s is new" % (filename))
+                else:
+                    os.remove(filename)
+
+            except Exception, e:
+                logging.error("Exception getting %s for %s: %s" % (url, filename, e))
 
         time.sleep(options.interval)
 
