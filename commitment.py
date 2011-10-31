@@ -34,8 +34,11 @@ def commit(message, key_b64, constant):
   
   the message is a string / byte array
   the key is a base64-encoded key
-  the constant is a base64-encoded constant
+  the constant is a byte array, not base64-encoded
+  Return the result base64-encoded
   """
+
+  debug("message: %s, len %d" % (binascii.hexlify(message), len(message)))
   
   # decode the base64 inputs
   key = base64.b64decode(key_b64)
@@ -66,10 +69,11 @@ if __name__ == '__main__':
   message = binascii.unhexlify('3004030102000301000200030104020001')
   key_b64 = 'dWvJjTDof3YHWyOYvkIFoA=='
   constant_b64 = 'UHJpbmNldG9uRWxlY3Rpbw=='
+  constant = 'PrincetonElectio'
   
   expected_b64 = 'EaYe2BToq529uzV7Re2vMdlqh38Wx3sjbcvnE/7qiWC6be1ytPGzQDsOotAUx2jkOpVThQo9zq+RRwDIQGxrjA=='
   
-  result = commit(message, key_b64, constant_b64)
+  result = commit(message, key_b64, constant)
   debug("result: %s" % result)
   
   if result == expected_b64:

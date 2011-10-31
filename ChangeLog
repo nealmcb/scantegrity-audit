@@ -1,3 +1,7 @@
+2011-10-30  Neal McBurnett  <neal@bcn.boulder.co.us>
+
+	* commitment.py (commit): Fix test case, given that now constant is not base64-encoded
+
 2011-10-29  Neal McBurnett  <neal@bcn.boulder.co.us>
 	* watch_remotegrity_bb.py Start by getting most recent hash of saved files, so on restart we don't save duplicates
 
